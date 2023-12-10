@@ -27,17 +27,23 @@ But things get more complicated in dynamic streams. You cannot store a point, *a
 
 **Theorem (Linear Sketches Are Optimal). [^LNW14][^AHLW16]** Suppose there is a universe $[N]$ and a decisional problem computing a set function $f:\lbrace 0,1\rbrace^{[N]} \to \lbrace 0,1\rbrace$. Any dynamic streaming algorithms solving this problem in $S$ bits space with constant probability can be implemented by a probabilistic linear map $\mathbb Z^n \to \mathbb Z^{\tilde O(s)}$ supported on $\tilde O(n)$ matrices with integer entries bounded by $\poly(n)$. *The theorem also holds for relational problems or general vectors instead of sets. The codomain of the linear map can also be a finite abelian group and the distribution of the map is actually uniform.*
 
-Even though, there exists an algorithm with $O(n^{\varepsilon^2})$ space for $O(1/\varepsilon)$-approximation. *TODO. Hint: JL*
+Even though, there exists an algorithm with $O\left(n^{\varepsilon^2}\right)$ space for $O(1/\varepsilon)$-approximation. *TODO. Hint: JL*
 
 Now we aim for a matching exponential lower bound. We construct a hard instance where the algorithm must distinguish between two cases.
 
 1. Draw $v\sim N(0,I_d/d)$. Draw $n$ i.i.d. vectors $v_1,\ldots,v_{n-1}$ from $v+\varepsilon N(0,I_d/d)$. Let $P=\{v_1,\ldots,v_{n-1},v_n:=v\}$. Then $\diam(P) \approx \varepsilon$
 2.  Similar as Case 1, but replace $v_n$ with $-v$. Then $\diam(P) \approx 2-\varepsilon$.
 
+<figure>
+<img src="/assets/2023-12-09-geometric-lower-bound-diameter-hard-instance.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+<figcaption class="center">Figure for Case 2</figcaption>
+</figure>
+
 By the linear sketches theorem, we can model the streaming algorithm as a map $\varphi : \mathbb R^n \to \mathbb Z^S_{[-M,M]}$. Denote $A := \sum_{i \le n} \varphi(v_i)$ and $B = A + (\varphi(v) - \varphi(-v))$. We want to prove that $A \approx_{\TVD} B$, where $\TVD$ stands for the [total variation distance](https://en.wikipedia.org/wiki/Total_variation_distance_of_probability_measures).
 
 How to prove such theorems? Intuitively, the order of $A$ is about $\sqrt n$ times that of $B-A$. Shifting $A$ by  a small term can hardly change anything. While this sounds easy, keep in mind the projection algorithm and that $\varphi(v_i)$ is highly biased towards $v$.
 
+{% comment %}
 We start with studying the sum of two unbalanced random variables.
 
 We want to prove $A + B \approx A$.
@@ -52,6 +58,8 @@ $$
 \le & \sqrt{\sum_y q_y^2} \cdot \sqrt{\sum_y \left(\sum_x |p_x - p_{x-y}|\right)^2}
 \end{align*}
 $$
+{% endcomment %}
+
 
 
 [^LNW14]: Yi Li, Huy L. Nguyễn, and David P. Woodruff. Turnstile streaming algorithms might as well be linear sketches. In *STOC* 2014.
