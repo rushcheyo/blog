@@ -23,7 +23,7 @@ In the classical graph Max-Cut problem, we are given an undirected and weighted 
 
 A special case of interest is that $V$ is a subset of a metric space $(T,d)$ and $w=d$.  In particular, if $(T,d) = (\mathbb R^d,\ell_p)$, the problem is called Euclidean Max-Cut.
 
-The Max-Cut problem (even in the Euclidean case) does not admit an [FPTAS](https://en.wikipedia.org/wiki/Fully_polynomial-time_approximation_scheme). Still, a 2-approximation is easy to compute. Let $S$ be a random subset that each $v \in V$ is included w.p. $1/2$. Then, $\maxcut(G) \ge \E \cut(S) \ge \frac 1 2 \sum_{\lbrace u,v\rbrace} w(u,v)$.
+The Max-Cut problem (even in the Euclidean case) does not admit an [FPTAS](https://en.wikipedia.org/wiki/Fully_polynomial-time_approximation_scheme). Still, a 2-approximation is easy to compute. Let $S$ be a random subset that each $v \in V$ is included with probability $1/2$. Then, $\maxcut(G) \ge \E \cut(S) \ge \frac 1 2 \sum_{\lbrace u,v\rbrace} w(u,v)$.
 
 ## The geometric streaming model
 
@@ -37,9 +37,9 @@ Let $\lvert P\rvert = n$. We will present a $\poly(\log \Delta, 1/\varepsilon, d
 
 ## Dimension reduction
 
-There is a so-called "[curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality)" phenomena which states that, most high-dimensional algorithms suffer from an $\exp(d)$ factor. For example, the [quadtree](https://en.wikipedia.org/wiki/Quadtree) will have $2^d$ children when $d$ grows. Recently, the community wants to get rid of this curse. Though we have succeed on Max-Cut, it is actually "not so hard" due to the following fact:
+There is a so-called "[curse of dimensionality](https://en.wikipedia.org/wiki/Curse_of_dimensionality)" phenomenon which states that, most high-dimensional algorithms suffer from an $\exp(d)$ factor. For example, the [quadtree](https://en.wikipedia.org/wiki/Quadtree) will have $2^d$ children when $d$ grows. Recently, the community wants to get rid of this curse. Though we have succeed on Max-Cut, the problem is actually "not so hard" due to the following fact:
 
-**Theorem (Constant-dimensional JL).** Let $P \subset \mathbb R^d$ equipped with $\ell_2$ metric. There exists a randomized map $\pi : \mathbb R^d \to \mathbb R^{d'}$ with $d' = O(\log(\frac{1}{\varepsilon \delta})\varepsilon^{-2})$ such that $\maxcut(\pi(P)) \in (1 \pm \varepsilon) \maxcut(P)$ holds w.p. $1-\delta$.
+**Theorem (Constant-dimensional JL).** Let $P \subset \mathbb R^d$ equipped with $\ell_2$ metric. There exists a randomized map $\pi : \mathbb R^d \to \mathbb R^{d'}$ with $d' = O(\log(\frac{1}{\varepsilon \delta})\varepsilon^{-2})$ such that $\maxcut(\pi(P)) \in (1 \pm \varepsilon) \maxcut(P)$ holds with probability $1-\delta$.
 
 **Proof.** Let $E = \lbrace \lbrace x,y\rbrace:d(\pi(x),\pi(y)) \notin (1 \pm \varepsilon)d(x,y) \rbrace$ be the distorted pairs. For all $S \subseteq P$,
 $$
@@ -57,7 +57,7 @@ It is sufficient to bound the second term. We construct $\pi$ by a $d\times d'$ 
 
 This implies $\E \max(\lvert d(x,y) - d(\pi(x),\pi(y))\rvert - \varepsilon d(x,y),0) \le \varepsilon \delta d(x,y)$ because we may assume $x - y = e_1$ by rotation and scaling.
 
-Then, by Markov's inequality, the second term is bounded by $\varepsilon \sum_{\lbrace x,y\rbrace\in P^2} d(x,y) \le 2\varepsilon \maxcut(P)$ w.p. $1-\delta$. $\square$
+Then, by Markov's inequality, the second term is bounded by $\varepsilon \sum_{\lbrace x,y\rbrace\in P^2} d(x,y) \le 2\varepsilon \maxcut(P)$ with probability $1-\delta$. $\square$
 
 Even though, if we directly reduce the dimension and invoke some $\exp(d)$ space algorithm, there is an undesired $\exp(1/\varepsilon^2)$ factor. It is non-trivial to avoid this.
 
@@ -73,17 +73,17 @@ There is an importance sampling technique converting the ratio to the complexity
 
 In case of Max-Cut, since $\maxcut(P)$ is close to $\sum_{\lbrace x,y\rbrace} d(x,y)$, one may want to define the importance of $x$ as $d(x)=\sum_{y} d(x,y)$. This indeed provides good concentration:
 
-**Theorem (Sample Complexity of Max-Cut).**  Let $P$ be a subset of a metric space $(T,d)$, $\mu$ be a distribution over $T$ such that $\mu(p) \ge \frac{d(p)}{\lambda \sum_p d(p)}$ for some $\lambda \ge 1$. If we draw $O(\poly(\lambda/\varepsilon))$ samples $V$ from $\mu$, and build a vertex-weighted graph $G(V,\mu,d)$ where $\cut(S) = \sum_{x\in S,y \notin S} d(x,y)/\mu(x)\mu(y)$, then $\maxcut(G) \in (1 \pm \varepsilon)\maxcut(P)$ w.p. $2/3$.
+**Theorem (Sample Complexity of Max-Cut).**  Let $P$ be a subset of a metric space $(T,d)$, $\mu$ be a distribution over $T$ such that $\mu(p) \ge \frac{d(p)}{\lambda \sum_p d(p)}$ for some $\lambda \ge 1$. If we draw $O(\poly(\lambda/\varepsilon))$ samples $V$ from $\mu$, and build a vertex-weighted graph $G(V,\mu,d)$ where $\cut(S) = \sum_{x\in S,y \notin S} d(x,y)/\mu(x)\mu(y)$, then $\maxcut(G) \in (1 \pm \varepsilon)\maxcut(P)$ w.h.p.
 
 This theorem can be proved by a simple black-box reduction to a classical sampling theorem on unweighted graphs. The idea is discretizing the weighted vertices and edges to many identical copies and then taking limits.
 
-**Theorem (Additive cut sparsification).** Let $G(V,E)$ be an unweighted graph, i.e. $\cut(S) = \lvert \lbrace\lbrace u,v\rbrace \in E : u \in S,v \notin S\rbrace\rvert$. Let $V'$ be an uniformly random subset of size $O(\varepsilon^{-4})$. Then, $\left\lvert \frac{\maxcut(V')}{\lvert V'\rvert^2} - \frac{\maxcut(V)}{\lvert V \rvert^2} \right\rvert \le \varepsilon$ holds w.p. $2/3$.
+**Theorem (Additive cut sparsification).** Let $G(V,E)$ be an unweighted graph, i.e. $\cut(S) = \lvert \lbrace\lbrace u,v\rbrace \in E : u \in S,v \notin S\rbrace\rvert$. Let $V'$ be an uniformly random subset of size $O(\varepsilon^{-4})$. Then, $\left\lvert \frac{\maxcut(V')}{\lvert V'\rvert^2} - \frac{\maxcut(V)}{\lvert V \rvert^2} \right\rvert \le \varepsilon$ holds w.h.p.
 
 ## Quadtree importance sampler
 
 Recall that the tree embedding $\pi$ guarentees $d(x,y) \le d(\pi(x),\pi(y))$ and $\E d(\pi(x),\pi(y)) \le \lambda d(x,y)$ for small $\lambda$. By Markov's inequality, $\sum_p d(\pi(p)) \le \lambda' \sum_p d(p)$ and $\frac{d(\pi(p))}{\sum_pd(\pi(p))} \ge \frac{d(p)}{\lambda' \sum_p(d(p))}$ hold w.h.p. for small $\lambda'$ .
 
-Hence, if we construct a good importance sampler for $\{d(\pi(p))\}_p$, we will get an importance sampler for $\{d(p)\}_p$ automatically. This allows us to focus on implementing the importance sampler in the streaming model efficiently for the quadtree metric from now on.
+Hence, if we construct a good importance sampler for $\lbrace d(\pi(p))\rbrace_p$, we will get an importance sampler for $\lbrace d(p)\rbrace_p$ automatically. This allows us to focus on implementing the importance sampler in the streaming model efficiently for the quadtree metric from now on.
 
 *TODO*
 
