@@ -25,9 +25,9 @@ In [my last post]({% post_url 2023-11-25-streaming-max-cut %}), I defined the dy
 
 But things get more complicated in dynamic streams. You cannot store a point, *and then* compute its distances with others. This can be explained by a powerful theorem characterizing dynamic streaming algorithms as *linear sketches*.
 
-**Theorem (Linear Sketches Are Optimal). [^LNW14][^AHLW16]** Suppose there is a universe $[N]$ and a decisional problem computing a set function $f:\lbrace 0,1\rbrace^{[N]} \to \lbrace 0,1\rbrace$. Any dynamic streaming algorithms solving this problem in $S$ bits space with constant probability can be implemented by a probabilistic linear map $\mathbb Z^n \to \mathbb Z^{\tilde O(s)}$ supported on $\tilde O(n)$ matrices with integer entries bounded by $\poly(n)$. *The theorem also holds for relational problems or general vectors instead of sets. The codomain of the linear map can also be a finite abelian group and the distribution of the map is actually uniform.*
+**Theorem (Linear Sketches Are Optimal). [^LNW14][^AHLW16]** Suppose there is a universe $[N]$ and a decisional problem computing a set function $f:\lbrace 0,1\rbrace^{[N]} \to \lbrace 0,1\rbrace$. Any dynamic streaming algorithms solving this problem in $S$ bits space with constant probability can be implemented by a probabilistic linear map $\mathbb Z^n \to \mathbb Z_{q_1}\otimes \cdots \mathbb Z_{q_{\tilde O(S)}}$ ($q$ is also stochastic) supported on $\tilde O(n)$ matrices with integer entries bounded by $\poly(n)$. *The theorem also holds for relational problems or general vectors instead of sets.*
 
-Even though, there exists an algorithm with $O\left(n^{\varepsilon^2}\right)$ space for $O(1/\varepsilon)$-approximation. *TODO. Hint: JL*
+The theorem implies that the algorithm must be "oblivious" to each point. Even though, there exists an algorithm with $O\left(n^{\varepsilon^2}\right)$ space for $O(1/\varepsilon)$-approximation. *TODO. Hint: JL*
 
 Now we aim for a matching exponential lower bound. We construct a hard instance where the algorithm must distinguish between two cases.
 
@@ -39,28 +39,12 @@ Now we aim for a matching exponential lower bound. We construct a hard instance 
 <figcaption class="center">Figure for Case 2</figcaption>
 </figure>
 
-By the linear sketches theorem, we can model the streaming algorithm as a map $\varphi : \mathbb R^n \to \mathbb Z^S_{[-M,M]}$. Denote $A := \sum_{i \le n} \varphi(v_i)$ and $B = A + (\varphi(v) - \varphi(-v))$. We want to prove that $A \approx_{\TVD} B$, where $\TVD$ stands for the [total variation distance](https://en.wikipedia.org/wiki/Total_variation_distance_of_probability_measures).
+We should point out that, the figure is misleading, because $\varepsilon$-spherical cap should occupy $1 - \exp(-cd\varepsilon^2)$ fraction of the sphere[^constant].
 
-How to prove such theorems? Intuitively, the order of $A$ is about $\sqrt n$ times that of $B-A$. Shifting $A$ by  a small term can hardly change anything. While this sounds easy, keep in mind the projection algorithm and that $\varphi(v_i)$ is highly biased towards $v$.
-
-{% comment %}
-We start with studying the sum of two unbalanced random variables.
-
-We want to prove $A + B \approx A$.
-
-Directly consider
-$$
-\begin{align*}
-& \sum_{x} \left\lvert p_x-\sum_{y} p_{x-y} q_y \right\rvert\\
-=& \sum_{x} \left\lvert \sum_{y}(p_x - p_{x-y}) q_y \right\rvert\\
-\le & \sum_{x}\sum_{y}|p_x - p_{x-y}| q_y\\
-= & \sum_y q_y \sum_x |p_x - p_{x-y}|\\
-\le & \sqrt{\sum_y q_y^2} \cdot \sqrt{\sum_y \left(\sum_x |p_x - p_{x-y}|\right)^2}
-\end{align*}
-$$
-{% endcomment %}
+By the linear sketches theorem and [Yao's minimax principle](https://en.wikipedia.org/wiki/Yao%27s_principle), we can model the streaming algorithm as a map $\varphi : \mathbb R^n \to G$ for some finite abelian group $G$. Denote $A := \sum_{i \le n} \varphi(v_i)$ and $B = A + (\varphi(-v) - \varphi(v))$. We want to prove that $A \approx_{\TVD} B$, where $\TVD$ stands for the [total variation distance](https://en.wikipedia.org/wiki/Total_variation_distance_of_probability_measures).
 
 
 
 [^LNW14]: Yi Li, Huy L. Nguyễn, and David P. Woodruff. Turnstile streaming algorithms might as well be linear sketches. In *STOC* 2014.
 [^AHLW16]: Yuqing Ai, Wei Hu, Yi Li, and David P Woodruff. New characterizations in turnstile streams with applications. In *Leibniz International Proceedings in Informatics*, volume 50. Schloss Dagstuhl-Leibniz-Zentrum fuer Informatik, 2016
+[^constant]: We follow the convention that $C, c$ denotes positive absolute constants where $C$ is "large but bounded" and $c$ is "small but bounded away from $0$". We might abuse of notation that using the same symbol for different absolute constants.
