@@ -3,6 +3,7 @@ layout: post
 title: Lower Bounds for Geometric Algorithms
 date: 2023-12-09
 summary: How do proving lower bounds for geometric algorithms demand more advanced isoperimetric inequalities?
+categories: my-research
 
 ---
 

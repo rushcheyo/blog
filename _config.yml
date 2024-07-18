@@ -3,7 +3,7 @@ title:       Xiaoyu's Blog
 email:       yuchen21@stu.pku.edu.cn
 author:      Xiaoyu Chen
 description: "An academic blog of Xiaoyu"
-baseurl:     ""
+baseurl:     "/blog"
 url:         "https://rushcheyo.github.io/"
 date_format: "%b %-d, %Y"
 header_pages:
