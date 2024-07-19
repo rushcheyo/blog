@@ -36,7 +36,7 @@ Now we aim for a matching exponential lower bound. We construct a hard instance 
 2.  Similar as Case 1, but replace $v_n$ with $-v$. Then $\diam(P) \approx 2-\varepsilon$.
 
 <figure>
-<img src="/assets/2023-12-09-geometric-lower-bound-diameter-hard-instance.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
+<img src="/blog/assets/2023-12-09-geometric-lower-bound-diameter-hard-instance.png" style="display: block; margin-left: auto; margin-right: auto; width: 50%;">
 <figcaption class="center">Figure for Case 2</figcaption>
 </figure>
 

@@ -1,6 +1,6 @@
 ---
 layout: page
 title: main
-permalink: /
+permalink: /main
 redirect_to: https://xiaoyuchen.me
 ---
