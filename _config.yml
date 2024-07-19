@@ -4,7 +4,7 @@ email:       yuchen21@stu.pku.edu.cn
 author:      Xiaoyu Chen
 description: "An academic blog of Xiaoyu"
 baseurl:     "/blog"
-url:         "https://xiaoyuchen.me/"
+url:         "https://xiaoyuchen.me"
 date_format: "%b %-d, %Y"
 header_pages:
  - about.md
