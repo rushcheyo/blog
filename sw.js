@@ -1,7 +1,7 @@
 ---
 layout: null
 ---
-var CACHE_NAME = "pixyll2";
+var CACHE_NAME = "xiaoyu-me-{{ site.time | date: '%Y%m%d%H%M%S' }}";
 
 self.addEventListener("install", function(e) {
   e.waitUntil(

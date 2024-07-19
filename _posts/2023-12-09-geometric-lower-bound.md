@@ -20,7 +20,7 @@ $$
 $$
 </span>
 
-In [my last post]({% post_url 2023-11-25-streaming-max-cut %}), I defined the dynamic (or turnstile) streaming model. There is a related but weaker model called insertion-only (or vanilla) streams where deletions are forbidden. Though it sounds weird, but it is **rare** when for some problems there are seperations between two models. Indeed, in common streaming algorithms, the most frequent primitives people use are sampling, maintaining some sums, or doing these after some hashing. All of them can be performed in dynamic streams.
+In [my last post]({{ site.baseurl }}{% post_url 2023-11-25-streaming-max-cut %}), I defined the dynamic (or turnstile) streaming model. There is a related but weaker model called insertion-only (or vanilla) streams where deletions are forbidden. Though it sounds weird, but it is **rare** when for some problems there are seperations between two models. Indeed, in common streaming algorithms, the most frequent primitives people use are sampling, maintaining some sums, or doing these after some hashing. All of them can be performed in dynamic streams.
 
 **Can we seperate them then?** Well, there is a simple geometric problem getting attention in the folklore. For a bounded subset $P \subset \mathbb R^d$, we can define its diameter $\diam(P) := \sup_{x,y \in P} d(x,y)$. Now consider the problem to approximate the diameter of the input streams within a constant ratio. This problem is very simple in insertion-only streams because one can compute $\max_{x \in P} d(x,P_1)$ where $P_1$ is the first point in the stream. Think for a moment and one can see that this is a $2$-approximation.
 
